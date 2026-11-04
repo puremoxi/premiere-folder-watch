@@ -485,7 +485,16 @@ async function getRootItem(project = runtime.project) {
 }
 
 async function getChildren(item) {
-  return item && typeof item.getItems === "function" ? item.getItems() : [];
+  // Plain ProjectItems from getItems() have no getItems(); cast bins to FolderItem first.
+  let folder = item;
+  if (item && typeof item.getItems !== "function") {
+    try {
+      folder = asFolderItem(item);
+    } catch (_) {
+      folder = null;
+    }
+  }
+  return folder && typeof folder.getItems === "function" ? folder.getItems() : [];
 }
 
 function itemName(item) {
