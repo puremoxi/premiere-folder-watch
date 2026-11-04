@@ -1238,7 +1238,14 @@ function handleWatchListClick(event) {
 }
 
 function attachEvents() {
-  $("toggleWatching").addEventListener("click", () => setAutoSync(!runtime.config.autoSync));
+  // toggleWatching is a div so its active fill can be painted; UXP ignores CSS backgrounds on <button>.
+  const toggleAutoSync = () => setAutoSync(!runtime.config.autoSync);
+  $("toggleWatching").addEventListener("click", toggleAutoSync);
+  $("toggleWatching").addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    toggleAutoSync();
+  });
   $("syncNow").addEventListener("click", () => syncAll("manual"));
   $("addFolder").addEventListener("click", addFolder);
   $("emptyAddFolder").addEventListener("click", addFolder);

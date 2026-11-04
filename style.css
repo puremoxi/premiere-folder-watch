@@ -138,25 +138,31 @@ h1 { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; }
 }
 
 .primary {
-  border: 1px solid #9285f5;
-  background: var(--accent);
+  border: 0;
+  background: transparent;
   color: white;
   font-weight: 620;
 }
 
-.primary:hover:not(:disabled) { background: var(--accent-hover); }
-.primary.watching { border-color: #75d8ac; background: #347d62; }
-.primary.watching:hover:not(:disabled) { background: #3a896b; }
 
 .secondary {
-  border: 1px solid var(--line);
-  background: var(--surface-2);
+  border: 0;
+  background: transparent;
 }
 
-.secondary:hover:not(:disabled) { border-color: var(--line-strong); background: var(--surface-3); }
-
-#toggleWatching { display: inline-flex; flex: 1 1 auto; align-items: center; justify-content: center; gap: 7px; }
-.button-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.75; }
+/* A div, not a <button>: UXP paints its own gray pill over a button's CSS background,
+   so the active fill would only peek out at the corners. The fill and radius match that pill. */
+#toggleWatching {
+  display: flex;
+  min-height: 38px;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #6a6a6a;
+  cursor: pointer;
+}
+#toggleWatching.watching { background-color: #5e8a73; }
 .add-button { flex: 0 0 auto; white-space: nowrap; }
 .add-button span { margin-right: 3px; font-size: 15px; line-height: 0; }
 
@@ -166,11 +172,10 @@ h1 { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; }
   padding: 0;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid var(--line);
-  background: var(--surface-2);
+  border: 0;
+  background: transparent;
 }
 
-.icon-button:hover:not(:disabled) { border-color: var(--line-strong); background: var(--surface-3); }
 .icon-button svg { width: 16px; height: 16px; }
 .icon-button path { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }
 .icon-button.syncing svg { animation: spin 0.85s linear infinite; }
@@ -304,12 +309,11 @@ h1 { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; }
 .card-actions button {
   min-height: 29px;
   flex: 1 1 0;
-  border-right: 1px solid var(--line);
+  border-right: 0;
   background: transparent;
   color: var(--muted);
   font-size: 10px;
 }
-.card-actions button:last-child { border-right: 0; }
 .card-actions button:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
 
 .activity-panel { margin-top: 12px; }
