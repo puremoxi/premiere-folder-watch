@@ -277,6 +277,27 @@ function setAutoSync(enabled) {
   if (enabled) syncAll("automatic");
 }
 
+// UXP does not run CSS animations, so the sync icon is rotated by script through the SVG
+// transform attribute while auto-sync is on or a sync is running.
+let syncSpinTimer = null;
+let syncSpinAngle = 0;
+
+function setSyncIconSpinning(spinning) {
+  const icon = $("syncSpin");
+  if (!icon) return;
+  if (spinning && syncSpinTimer === null) {
+    syncSpinTimer = setInterval(() => {
+      syncSpinAngle = (syncSpinAngle + 30) % 360;
+      icon.setAttribute("transform", `rotate(${syncSpinAngle} 10 10)`);
+    }, 70);
+  } else if (!spinning && syncSpinTimer !== null) {
+    clearInterval(syncSpinTimer);
+    syncSpinTimer = null;
+    syncSpinAngle = 0;
+    icon.removeAttribute("transform");
+  }
+}
+
 function renderToolbar() {
   if (!$("toggleWatching")) return;
   $("toggleWatching").classList.toggle("watching", runtime.config.autoSync);
@@ -290,6 +311,7 @@ function renderToolbar() {
   $("syncNow").classList.toggle("is-disabled", syncUnavailable);
   $("syncNow").setAttribute("aria-disabled", String(syncUnavailable));
   $("syncNow").classList.toggle("syncing", runtime.syncing);
+  setSyncIconSpinning(runtime.config.autoSync || runtime.syncing);
   $("addFolder").disabled = !runtime.projectGuid;
   $("emptyAddFolder").disabled = !runtime.projectGuid;
 }
