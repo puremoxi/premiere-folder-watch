@@ -21,7 +21,8 @@
     "validate": "npm run check",
     "deploy:windows": "bash scripts/deploy-windows.sh",
     "load:windows": "bash scripts/load-windows.sh",
-    "dev:windows": "bash scripts/dev-windows.sh"
+    "dev:windows": "bash scripts/dev-windows.sh",
+    "probe:windows": "bash scripts/probe-windows.sh"
   },
   "engines": {
     "node": ">=20"

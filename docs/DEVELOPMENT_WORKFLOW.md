@@ -25,6 +25,7 @@ WSL in the default NAT networking mode cannot reach `127.0.0.1` on Windows, so
 | `npm run deploy:windows [dest]` | Validate, then copy runtime files to Windows |
 | `npm run load:windows [dest]` | Validate and load the deployed plugin via UDT |
 | `npm run dev:windows [dest]` | Validate, deploy, then attempt load; stages reported separately |
+| `npm run probe:windows [dest] [--eval "<js>"]` | Read-only probe of the live panel: layout rectangles and key computed styles (needs Windows Node 22+) |
 | `npm run package` | Build the `.ccx` release archive |
 
 Destination: argument, else `FOLDER_WATCH_WIN_DIR`, else `/mnt/c/Tools/PremiereFolderWatch`.
@@ -39,6 +40,15 @@ Exit codes: `deploy` 0 ok / 1 failed. `load` 0 loaded / 2 prerequisite missing /
 First-time UDT setup: with Premiere running, open UDT, Add Plugin, select
 `C:\Tools\PremiereFolderWatch\manifest.json`, Load. After each deploy, run
 `npm run load:windows` or click Reload in UDT.
+
+## Probing the live panel
+
+`npm run probe:windows` reloads the deployed plugin, attaches to its UDT debug session and prints
+layout rectangles and computed styles for the main controls. It is read-only: it never changes the
+project, the DOM or files. Keep the Folder Watch panel visible while it runs, and close any other
+debugger attached to the plugin. Pass `--eval "<expression>"` to evaluate your own expression instead.
+UXP reports 0x0 rectangles until about 800 ms after a DOM change and ignores `position: fixed`, so
+measurements are taken after a short wait. A probe confirms layout numbers, not how the panel looks.
 
 ## Testing boundaries
 
